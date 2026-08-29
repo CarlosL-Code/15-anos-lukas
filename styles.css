@@ -18,10 +18,8 @@ body, html {
     display: flex; justify-content: center; align-items: center;
     opacity: 0; transition: opacity 2s ease-in-out;
     z-index: 1;
-    /* Glassmorphism background for the slide */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    background-color: rgba(20, 10, 15, 0.4);
+    background-color: rgba(20, 10, 15, 0.4); /* Removed backdrop-filter to fix severe lag */
+    will-change: opacity;
 }
 
 .slide-img {
@@ -31,6 +29,7 @@ body, html {
     background-repeat: no-repeat;
     transform: scale(1);
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    will-change: transform;
 }
 
 .slide-video {
@@ -38,7 +37,10 @@ body, html {
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 
-.slide.active, .slide.previous { animation: kenburns 15s linear forwards; }
+/* Only animate the inner image/video to avoid layout thrashing */
+.slide.active .slide-img, .slide.previous .slide-img { animation: kenburns 15s linear forwards; }
+.slide.active .slide-video, .slide.previous .slide-video { animation: kenburns 15s linear forwards; }
+
 .slide.active { opacity: 1; z-index: 3; }
 .slide.previous { opacity: 0; z-index: 2; }
 
@@ -109,6 +111,7 @@ p { font-size: 1.2rem; font-weight: 300; margin-bottom: 40px; letter-spacing: 1p
     position: absolute; width: 60px; height: 75px; opacity: 0.95; bottom: -100px;
     border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
     animation: floatUp linear infinite;
+    will-change: transform;
 }
 .balloon::before {
     content: ''; position: absolute; width: 2px; height: 80px;
