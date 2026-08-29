@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let slides = [];
     let slideTimer;
     let isPlaying = true;
-    const slideDuration = 6000;
+    const slideDuration = 8500; // Increased to 8.5s so images last longer than the 3 songs (no repeating)
 
     // Decorations
     const decorationsContainer = document.getElementById('decorations');
@@ -46,7 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let text = document.createElement('div');
             text.classList.add('floating-text');
             text.innerText = "Feliz 15 Lucas";
-            let side = Math.random() > 0.5 ? (Math.random() * 10 + 15) : (75 + Math.random() * 10);
+            
+            // Explicitly force half to the left, half to the right
+            let side;
+            if (i % 2 === 0) {
+                side = Math.random() * 10 + 10; // 10vw to 20vw (Left)
+            } else {
+                side = 75 + Math.random() * 10; // 75vw to 85vw (Right)
+            }
+            
             text.style.left = side + 'vw';
             text.style.animationDuration = (Math.random() * 15 + 18) + 's';
             text.style.animationDelay = (Math.random() * 25) + 's';
