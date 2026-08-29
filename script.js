@@ -141,13 +141,22 @@ document.addEventListener('DOMContentLoaded', () => {
         playPauseBtn.innerText = isPlaying ? "⏸" : "▶";
         
         if (isPlaying) {
+            document.body.classList.remove('is-paused');
             updateProgressBar();
             resetTimer();
             handleVideoPlayback(slides[currentImageIndex], true);
+            audioPlayer.play().catch(e => console.log(e));
         } else {
+            document.body.classList.add('is-paused');
             clearInterval(slideTimer);
+            
+            // Freeze progress bar where it is
+            const computedWidth = window.getComputedStyle(progressBar).width;
             progressBar.style.transition = 'none';
+            progressBar.style.width = computedWidth;
+            
             handleVideoPlayback(slides[currentImageIndex], false);
+            audioPlayer.pause();
         }
     }
 
