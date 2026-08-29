@@ -184,21 +184,27 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const handleTimeUpdate = (currentPlayer, nextPlayer) => {
-                // Skip the last 12 seconds to avoid long silent tails
-                if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 12) {
+                // Skip the last 15 seconds to avoid long silent tails entirely
+                if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 15) {
                     currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
                     nextPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
                     nextPlayer.currentTime = 0;
-                    nextPlayer.play();
+                    nextPlayer.play().catch(e => console.log("Next track play failed:", e));
                     activePlayer = activePlayer === 1 ? 2 : 1;
                     currentPlayer.ontimeupdate = null; // Unbind
                     nextPlayer.ontimeupdate = () => handleTimeUpdate(nextPlayer, currentPlayer);
                     
-                    // Fade out the current player gracefully
-                    let vol = 1;
+                    // Fade out the current player gracefully and safely
                     let fadeOut = setInterval(() => {
-                        if (vol > 0.1) { vol -= 0.1; currentPlayer.volume = vol; }
-                        else { clearInterval(fadeOut); currentPlayer.pause(); currentPlayer.volume = 1; }
+                        let newVol = currentPlayer.volume - 0.1;
+                        if (newVol <= 0.05) {
+                            clearInterval(fadeOut);
+                            currentPlayer.volume = 0;
+                            currentPlayer.pause();
+                            currentPlayer.volume = 1;
+                        } else {
+                            currentPlayer.volume = newVol;
+                        }
                     }, 200);
                 }
             };

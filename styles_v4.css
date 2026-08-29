@@ -44,21 +44,9 @@ body.is-paused *, body.is-paused *::before, body.is-paused *::after {
     will-change: transform;
 }
 
-/* Define the different animation classes to be assigned via JS */
-.anim-zoom.active .slide-img, .anim-zoom.previous .slide-img { transform-origin: center; animation: kenburns 15s linear forwards; }
-.anim-zoom.active .slide-video, .anim-zoom.previous .slide-video { transform-origin: center; animation: kenburns 15s linear forwards; }
-
-.anim-pan-right.active .slide-img, .anim-pan-right.previous .slide-img { transform-origin: top left; animation: kenburns 15s linear forwards; }
-.anim-pan-right.active .slide-video, .anim-pan-right.previous .slide-video { transform-origin: top left; animation: kenburns 15s linear forwards; }
-
-.anim-pan-left.active .slide-img, .anim-pan-left.previous .slide-img { transform-origin: bottom right; animation: kenburns 15s linear forwards; }
-.anim-pan-left.active .slide-video, .anim-pan-left.previous .slide-video { transform-origin: bottom right; animation: kenburns 15s linear forwards; }
-
-.anim-up.active .slide-img, .anim-up.previous .slide-img { transform-origin: bottom center; animation: kenburns 15s linear forwards; }
-.anim-up.active .slide-video, .anim-up.previous .slide-video { transform-origin: bottom center; animation: kenburns 15s linear forwards; }
-
-.anim-down.active .slide-img, .anim-down.previous .slide-img { transform-origin: top center; animation: kenburns 15s linear forwards; }
-.anim-down.active .slide-video, .anim-down.previous .slide-video { transform-origin: top center; animation: kenburns 15s linear forwards; }
+/* Define the base animation class */
+.slide.active .slide-img, .slide.previous .slide-img { transform-origin: center; animation: kenburns 15s linear forwards; }
+.slide.active .slide-video, .slide.previous .slide-video { transform-origin: center; animation: kenburns 15s linear forwards; }
 
 .slide.active { opacity: 1; z-index: 3; }
 .slide.previous { opacity: 0; z-index: 2; }
@@ -163,7 +151,7 @@ p { font-size: 1.2rem; font-weight: 300; margin-bottom: 40px; letter-spacing: 1p
     cursor: pointer; display: flex; justify-content: center; align-items: center;
     transition: all 0.3s ease; backdrop-filter: blur(5px);
 }
-.control-btn:hover { background: #e6c8a3; color: #0d0d0d; }
+.control-btn:hover { background: rgba(230,200,163,0.3); color: #fff; box-shadow: 0 0 15px rgba(230,200,163,0.5); }
 
 #progress-bar-container {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
