@@ -184,7 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const handleTimeUpdate = (currentPlayer, nextPlayer) => {
-                if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 1) {
+                // Skip the last 12 seconds to avoid long silent tails
+                if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 12) {
                     currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
                     nextPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
                     nextPlayer.currentTime = 0;
@@ -192,6 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     activePlayer = activePlayer === 1 ? 2 : 1;
                     currentPlayer.ontimeupdate = null; // Unbind
                     nextPlayer.ontimeupdate = () => handleTimeUpdate(nextPlayer, currentPlayer);
+                    
+                    // Fade out the current player gracefully
+                    let vol = 1;
+                    let fadeOut = setInterval(() => {
+                        if (vol > 0.1) { vol -= 0.1; currentPlayer.volume = vol; }
+                        else { clearInterval(fadeOut); currentPlayer.pause(); currentPlayer.volume = 1; }
+                    }, 200);
                 }
             };
             
