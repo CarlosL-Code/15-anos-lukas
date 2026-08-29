@@ -62,23 +62,23 @@ body.is-paused *, body.is-paused *::before, body.is-paused *::after {
 
 @keyframes kenburns {
     0% { transform: scale(1); }
-    100% { transform: scale(1.08); }
+    100% { transform: scale(1.15); }
 }
 @keyframes panRight {
-    0% { transform: scale(1.05) translateX(-2%); }
-    100% { transform: scale(1.05) translateX(2%); }
+    0% { transform: scale(1.15) translateX(-6%); }
+    100% { transform: scale(1.15) translateX(6%); }
 }
 @keyframes panLeft {
-    0% { transform: scale(1.05) translateX(2%); }
-    100% { transform: scale(1.05) translateX(-2%); }
+    0% { transform: scale(1.15) translateX(6%); }
+    100% { transform: scale(1.15) translateX(-6%); }
 }
 @keyframes floatUpSlide {
-    0% { transform: scale(1.03) translateY(2%); }
-    100% { transform: scale(1.03) translateY(-2%); }
+    0% { transform: scale(1.15) translateY(6%); }
+    100% { transform: scale(1.15) translateY(-6%); }
 }
 @keyframes floatDownSlide {
-    0% { transform: scale(1.03) translateY(-2%); }
-    100% { transform: scale(1.03) translateY(2%); }
+    0% { transform: scale(1.15) translateY(-6%); }
+    100% { transform: scale(1.15) translateY(6%); }
 }
 
 #vignette {
