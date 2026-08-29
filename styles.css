@@ -37,25 +37,28 @@ body.is-paused *, body.is-paused *::before, body.is-paused *::after {
 }
 
 .slide-video {
-    max-width: 100%; max-height: 100%;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    will-change: transform;
 }
 
 /* Define the different animation classes to be assigned via JS */
-.anim-zoom.active .slide-img, .anim-zoom.previous .slide-img { animation: kenburns 15s linear forwards; }
-.anim-zoom.active .slide-video, .anim-zoom.previous .slide-video { animation: kenburns 15s linear forwards; }
+.anim-zoom.active .slide-img, .anim-zoom.previous .slide-img { transform-origin: center; animation: kenburns 15s linear forwards; }
+.anim-zoom.active .slide-video, .anim-zoom.previous .slide-video { transform-origin: center; animation: kenburns 15s linear forwards; }
 
-.anim-pan-right.active .slide-img, .anim-pan-right.previous .slide-img { animation: panRight 15s linear forwards; }
-.anim-pan-right.active .slide-video, .anim-pan-right.previous .slide-video { animation: panRight 15s linear forwards; }
+.anim-pan-right.active .slide-img, .anim-pan-right.previous .slide-img { transform-origin: top left; animation: kenburns 15s linear forwards; }
+.anim-pan-right.active .slide-video, .anim-pan-right.previous .slide-video { transform-origin: top left; animation: kenburns 15s linear forwards; }
 
-.anim-pan-left.active .slide-img, .anim-pan-left.previous .slide-img { animation: panLeft 15s linear forwards; }
-.anim-pan-left.active .slide-video, .anim-pan-left.previous .slide-video { animation: panLeft 15s linear forwards; }
+.anim-pan-left.active .slide-img, .anim-pan-left.previous .slide-img { transform-origin: bottom right; animation: kenburns 15s linear forwards; }
+.anim-pan-left.active .slide-video, .anim-pan-left.previous .slide-video { transform-origin: bottom right; animation: kenburns 15s linear forwards; }
 
-.anim-up.active .slide-img, .anim-up.previous .slide-img { animation: floatUpSlide 15s linear forwards; }
-.anim-up.active .slide-video, .anim-up.previous .slide-video { animation: floatUpSlide 15s linear forwards; }
+.anim-up.active .slide-img, .anim-up.previous .slide-img { transform-origin: bottom center; animation: kenburns 15s linear forwards; }
+.anim-up.active .slide-video, .anim-up.previous .slide-video { transform-origin: bottom center; animation: kenburns 15s linear forwards; }
 
-.anim-down.active .slide-img, .anim-down.previous .slide-img { animation: floatDownSlide 15s linear forwards; }
-.anim-down.active .slide-video, .anim-down.previous .slide-video { animation: floatDownSlide 15s linear forwards; }
+.anim-down.active .slide-img, .anim-down.previous .slide-img { transform-origin: top center; animation: kenburns 15s linear forwards; }
+.anim-down.active .slide-video, .anim-down.previous .slide-video { transform-origin: top center; animation: kenburns 15s linear forwards; }
 
 .slide.active { opacity: 1; z-index: 3; }
 .slide.previous { opacity: 0; z-index: 2; }
@@ -63,22 +66,6 @@ body.is-paused *, body.is-paused *::before, body.is-paused *::after {
 @keyframes kenburns {
     0% { transform: scale(1); }
     100% { transform: scale(1.15); }
-}
-@keyframes panRight {
-    0% { transform: scale(1.15) translateX(-6%); }
-    100% { transform: scale(1.15) translateX(6%); }
-}
-@keyframes panLeft {
-    0% { transform: scale(1.15) translateX(6%); }
-    100% { transform: scale(1.15) translateX(-6%); }
-}
-@keyframes floatUpSlide {
-    0% { transform: scale(1.15) translateY(6%); }
-    100% { transform: scale(1.15) translateY(-6%); }
-}
-@keyframes floatDownSlide {
-    0% { transform: scale(1.15) translateY(-6%); }
-    100% { transform: scale(1.15) translateY(6%); }
 }
 
 #vignette {

@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const slideshowContainer = document.getElementById('slideshow-container');
     const overlay = document.getElementById('overlay');
     const startBtn = document.getElementById('start-btn');
-    const audioPlayer = document.getElementById('audio-player');
+    const audioPlayer1 = document.getElementById('audio-player-1');
+    const audioPlayer2 = document.getElementById('audio-player-2');
     const controlsContainer = document.getElementById('controls-container');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentImageIndex = 0;
     let currentAudioIndex = 0;
+    let activePlayer = 1;
     let slides = [];
     let slideTimer;
     let isPlaying = true;
@@ -144,14 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function togglePlayPause() {
         isPlaying = !isPlaying;
-        playPauseBtn.innerText = isPlaying ? "⏸" : "▶";
+        playPauseBtn.innerHTML = isPlaying ? "&#10074;&#10074;" : "&#9654;";
+        
+        const currentAudio = activePlayer === 1 ? audioPlayer1 : audioPlayer2;
         
         if (isPlaying) {
             document.body.classList.remove('is-paused');
             updateProgressBar();
             resetTimer();
             handleVideoPlayback(slides[currentImageIndex], true);
-            audioPlayer.play().catch(e => console.log(e));
+            currentAudio.play().catch(e => console.log(e));
         } else {
             document.body.classList.add('is-paused');
             clearInterval(slideTimer);
@@ -162,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.width = computedWidth;
             
             handleVideoPlayback(slides[currentImageIndex], false);
-            audioPlayer.pause();
+            currentAudio.pause();
         }
     }
 
@@ -172,16 +176,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playAudio() {
         if (audioFiles && audioFiles.length > 0) {
-            audioPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
-            audioPlayer.play().catch(e => console.log("Audio play prevented:", e));
+            audioPlayer1.src = encodeURI(audioFiles[0]);
+            audioPlayer1.play().catch(e => console.log("Audio play prevented:", e));
             
-            audioPlayer.ontimeupdate = () => {
-                if (audioPlayer.duration && audioPlayer.currentTime >= audioPlayer.duration - 3) {
+            if (audioFiles.length > 1) {
+                audioPlayer2.src = encodeURI(audioFiles[1]);
+            }
+            
+            const handleTimeUpdate = (currentPlayer, nextPlayer) => {
+                if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 1) {
                     currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
-                    audioPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
-                    audioPlayer.play();
+                    nextPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
+                    nextPlayer.currentTime = 0;
+                    nextPlayer.play();
+                    activePlayer = activePlayer === 1 ? 2 : 1;
+                    currentPlayer.ontimeupdate = null; // Unbind
+                    nextPlayer.ontimeupdate = () => handleTimeUpdate(nextPlayer, currentPlayer);
                 }
             };
+            
+            audioPlayer1.ontimeupdate = () => handleTimeUpdate(audioPlayer1, audioPlayer2);
         }
     }
 
