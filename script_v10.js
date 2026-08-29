@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             // Fade out the intro and start slideshow
-            const totalIntroTime = 1000 + (introLines.length * 2000) + 5000; // 5 seconds after letters appear
+            const totalIntroTime = 1000 + (introLines.length * 3500) + 5000; // 5 seconds after letters appear
             setTimeout(() => {
                 msgIntro.style.opacity = '0';
                 
