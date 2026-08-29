@@ -196,6 +196,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const handleTimeUpdate = (currentPlayer, nextPlayer) => {
                 // Skip the last 15 seconds to avoid long silent tails entirely
                 if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 15) {
+                    
+                    if (currentAudioIndex === audioFiles.length - 1) {
+                        // THIS IS THE LAST SONG! Trigger End Sequence
+                        clearInterval(slideTimer);
+                        isPlaying = false;
+                        
+                        // Fade out current audio
+                        let fadeOut = setInterval(() => {
+                            let newVol = currentPlayer.volume - 0.1;
+                            if (newVol <= 0.05) {
+                                clearInterval(fadeOut);
+                                currentPlayer.volume = 0;
+                                currentPlayer.pause();
+                            } else {
+                                currentPlayer.volume = newVol;
+                            }
+                        }, 200);
+
+                        // Fade out slideshow and hide controls
+                        controlsContainer.style.opacity = '0';
+                        slideshowContainer.style.opacity = '0';
+                        
+                        // Show Outro Message
+                        setTimeout(() => {
+                            const msgOutro = document.getElementById('message-outro');
+                            msgOutro.style.display = 'flex';
+                            setTimeout(() => { msgOutro.style.opacity = '1'; }, 100);
+                            
+                            const msgLines = msgOutro.querySelectorAll('.msg-line');
+                            msgLines.forEach((line, index) => {
+                                setTimeout(() => { line.classList.add('visible'); }, 1000 + (index * 3500));
+                            });
+                        }, 2000);
+                        
+                        currentPlayer.ontimeupdate = null;
+                        return; // Stop logic here
+                    }
+
                     currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
                     
                     // Start playing the already-preloaded next player
