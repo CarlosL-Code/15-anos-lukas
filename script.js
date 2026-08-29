@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < 6; i++) {
             let text = document.createElement('div');
             text.classList.add('floating-text');
-            text.innerText = "Feliz 15 Lukas";
+            text.innerText = "Feliz 15 Lucas";
             let side = Math.random() > 0.5 ? (Math.random() * 10 + 15) : (75 + Math.random() * 10);
             text.style.left = side + 'vw';
             text.style.animationDuration = (Math.random() * 15 + 18) + 's';
