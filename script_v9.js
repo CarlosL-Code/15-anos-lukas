@@ -281,13 +281,13 @@ document.addEventListener('DOMContentLoaded', () => {
             msgIntro.style.display = 'flex';
             setTimeout(() => { msgIntro.style.opacity = '1'; }, 100);
             
-            const msgLines = document.querySelectorAll('.msg-line');
-            msgLines.forEach((line, index) => {
+            const introLines = msgIntro.querySelectorAll('.msg-line');
+            introLines.forEach((line, index) => {
                 setTimeout(() => { line.classList.add('visible'); }, 1000 + (index * 3500));
             });
             
             // Fade out the intro and start slideshow
-            const totalIntroTime = 1000 + (msgLines.length * 3500) + 5000;
+            const totalIntroTime = 1000 + (introLines.length * 2000) + 5000; // 5 seconds after letters appear
             setTimeout(() => {
                 msgIntro.style.opacity = '0';
                 
