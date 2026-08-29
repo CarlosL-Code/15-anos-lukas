@@ -180,16 +180,23 @@ document.addEventListener('DOMContentLoaded', () => {
             audioPlayer1.play().catch(e => console.log("Audio play prevented:", e));
             
             if (audioFiles.length > 1) {
+                // Preload the next song IMMEDIATELY so it's ready in memory
                 audioPlayer2.src = encodeURI(audioFiles[1]);
+                audioPlayer2.load();
             }
             
             const handleTimeUpdate = (currentPlayer, nextPlayer) => {
                 // Skip the last 15 seconds to avoid long silent tails entirely
                 if (currentPlayer.duration && currentPlayer.currentTime >= currentPlayer.duration - 15) {
                     currentAudioIndex = (currentAudioIndex + 1) % audioFiles.length;
-                    nextPlayer.src = encodeURI(audioFiles[currentAudioIndex]);
+                    
+                    // Start playing the already-preloaded next player
                     nextPlayer.currentTime = 0;
                     nextPlayer.play().catch(e => console.log("Next track play failed:", e));
+                    
+                    // Immediately preload the THIRD song in the background into the old player
+                    const nextNextIndex = (currentAudioIndex + 1) % audioFiles.length;
+                    
                     activePlayer = activePlayer === 1 ? 2 : 1;
                     currentPlayer.ontimeupdate = null; // Unbind
                     nextPlayer.ontimeupdate = () => handleTimeUpdate(nextPlayer, currentPlayer);
@@ -202,6 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentPlayer.volume = 0;
                             currentPlayer.pause();
                             currentPlayer.volume = 1;
+                            // Preload the upcoming song now that it's fully paused
+                            currentPlayer.src = encodeURI(audioFiles[nextNextIndex]);
+                            currentPlayer.load();
                         } else {
                             currentPlayer.volume = newVol;
                         }
