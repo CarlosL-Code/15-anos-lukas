@@ -58,10 +58,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const shuffledItems = uniqueImages.sort(() => 0.5 - Math.random());
     const validItems = shuffledItems.filter(img => img.match(/\.(jpeg|jpg|png|gif|mp4)$/i));
 
+    const animations = ['anim-zoom', 'anim-pan-right', 'anim-pan-left', 'anim-up', 'anim-down'];
+
     // Create slide elements
     validItems.forEach((src) => {
         const slide = document.createElement('div');
         slide.classList.add('slide');
+        
+        // Assign a random movement animation to this slide
+        const randomAnim = animations[Math.floor(Math.random() * animations.length)];
+        slide.classList.add(randomAnim);
         
         if (src.toLowerCase().endsWith('.mp4')) {
             const vid = document.createElement('video');
